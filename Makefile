@@ -1,34 +1,38 @@
-SRCS=		./srcs
-DIR=		./
-RM=		rm -rf
-CHECKER=	checker
-PUSH_SWAP=	push_swap
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: nahaddac <nahaddac@student.s19.be>         +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2020/10/17 15:15:06 by nahaddac          #+#    #+#              #
+#    Updated: 2021/01/18 11:11:42 by nahaddac         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
+SRCS			= main.c utils.c ft_split.c ft_atoi.c swap.c \
+					test.c init_stack.c sort.c ft_quick_sort.c
 
-all:		
-		$(CHECKER) $(PUSHSWAP)
+OBJS			= $(SRCS:.c=.o)
 
-$(CHECKER):
-		@$(MAKE) -C $(SRCS)/$(CHECKER) MAKEFLAGS=
-		@cp -rf $(SRCS)/$(CHECKER)/$(CHECKER) $(DIR)/$(CHECKER)
+CC				= gcc
+RM				= rm -f
+# SEGV			= -fsanitize=address
+CFLAGS			= $(SEGV) -Wall -Wextra -Werror
 
-$(PUSH_SWAP):	
-		@$(MAKE) -C $(SRCS)/$(PUSH_SWAP)/ MAKEFLAGS=
-		@cp -rf $(SRCS)/$(PUSH_SWAP)/$(PUSH_SWAP) ./$(PUSH_SWAP)
+NAME			= push_swap
 
-clean:		
-		@make clean -C $(SRCS)/$(CHECKER)
-		@make clean -C $(SRCS)/$(PUSH_SWAP)
+all:			$(NAME)
 
-fclean:
-		@make fclean -C $(SRCS)/$(CHECKER)
-		@make fclean -C $(SRCS)/$(PUSH_SWAP)
-		@$(RM) $(CHECKER)
-		@$(RM) $(PUSH_SWAP)
+$(NAME):		$(OBJS)
+				gcc ${CFLAGS} -o ${NAME} ${OBJS}
 
-re:
-		fclean all
+clean:
+				$(RM) $(OBJS) $(BONUS_OBJS)
 
+fclean:			clean
+				$(RM) $(NAME)
 
+re:				fclean $(NAME)
 
-.PHONY:		all clean fclean checker push_swap
+.PHONY:			all clean fclean re
